@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href= "/public/css/base.css">  
+     <!-- Bootstrap CSS -->
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
+    
+    
+    
+    <title>user homepage</title>
+</head>
+
+<body>
+ <!-- html header -->
+ <!-- Bootstrap -->
+ <div class="container">
+    <header class="p-3 mb-3 border-bottom">
+        <div class="container">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+    
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+              <li><a id='headernav_post' class="nav-link px-2 link-dark" style="cursor: pointer;">Posts</a></li>
+              <li><a id='headernav_blog' class="nav-link px-2 link-secondary" style="cursor: pointer;">Blog</a></li>
+              <li><a id='headernav_profile' class="nav-link px-2 link-dark" style="cursor: pointer;">Profile</a></li>
+            </ul>
+            
+            
+            <!-- Search Form -->
+            <!-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+              <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+            </form> -->
+    
+            <div class="dropdown text-end">
+              <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                <!-- Edit here for usename -->
+                <% if (userdetails) { %>
+                    <%= userdetails[1] %> 
+
+                    <% } %>
+                
+              </a>
+              <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                <li><a class="dropdown-item" id='headernav_dropdown_new_post' style="cursor: pointer;">New post...</a></li>
+                <li><a class="dropdown-item" id='headernav_dropdown_edit_profile' style="cursor: pointer;">Edit Profile</a></li>
+                <li><a class="dropdown-item" id='headernav_dropdown_go_to_blog' style="cursor: pointer;" href=<%="/blog/:" + userdetails[0] %>> Your Blog</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/logout">Sign out</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    </header>
+
+    <div class="post-list" id="main_div">
+        
+        <div class="container-fluid pb-3">
+            <div class="d-grid gap-3" style="grid-template-columns: 1fr 2fr;">
+              <div class="bg-light border rounded-3">
+                <div class="blog_profile">
+                    <% if (userdetails) { %>
+                        <h3>
+                            Name: <%= userdetails[1]%>
+                        </h3>
+                        <img src=<%= "/public/userprofile/" +userdetails[4] %> alt ="profilepic" width ="125" height ="125">
+                        <br>
+                        <p>Bio: <%= userdetails[2] %></p>
+                        <a href=<%="https://www.instagram.com/" + userdetails[3][0] %> class="fa fa-instagram"></a>
+                        <a href=<%="https://www.twitter.com/" + userdetails[3][1] %> class="fa fa-twitter"></a>
+                        <a href=<%="https://www.github.com/" + userdetails[3][2]%> class="fa fa-github"></a>
+                        
+                
+                    <% } %>
+                </div>
+              </div>
+              <div class="bg-light border rounded-3">
+                
+                <div class="blog-post">
+                    <h2>Posts</h2>
+                    <% if (posts) { %>
+                        
+                        <% for(var i=0; i < posts.length; i++) { %>
+                            <div id="posts<%= i %>" style="cursor: pointer;"><h3><%= posts[i][2] %> </h3> <br><h4>published at</h4><h5> <%= posts[i][4] %></h5></div>
+                            <%- posts[i][3] %>
+
+                            
+                            
+
+                        <% } %>
+                    <% } %>
+                </div>
+    
+              </div>
+            </div>
+          </div>
+
+
+    </div>
+
+    
+        
+
+</div>
+
+  <script>
+    //DOM 
+    function initialize(event){
+        // render_main_div(cat=1);
+        
+    }
+    document.addEventListener("DOMContentLoaded", initialize, false);
+   
+
+
+
+    function html_post(){
+        return '<h2>Your posts</h2>\
+        <% if (error) { %>\
+            <div class="err">\
+                <%= error %>\
+            </div>\
+            <% } %>\
+            <table class ="postlist">\
+            <% if (posts) { %>\
+                <tr>\
+                    <td style="font-weight: normal;">Title  </td>\
+                    <td style="font-weight: normal;">Published time  </td>\
+                    <td style="font-weight: normal;">Option</td>\
+                </tr>\
+                <% for(var i=0; i < posts.length; i++) { %>\
+                    <tr>\
+                        <td> <%= posts[i][2] %>  </td>\
+                        <td> <%= posts[i][4] %>  </td>\
+                        <td><form id ="delete" action="/delete_post" method="post"><button type = submit value=<%=posts[i][0] %> name ="delete"> delete </button></form></td>\
+                    </tr>\
+                    <% } %>\
+            </table>\
+            <% } %>'
+    }
+
+
+
+
+    
+
+    function html_profile(){
+        return '<div class="blog_profile">\
+                <% if (userdetails) { %>\
+                    <h3>\
+                        Name: <%= userdetails[1]%>\
+                    </h3>\
+                    <img src=<%= "/public/userprofile/" +userdetails[4] %> alt ="profilepic" width ="125" height ="125">\
+                    <br>\
+                    <p>Bio: <%= userdetails[2] %></p>\
+                    <a href=<%="https://www.instagram.com/" + userdetails[3][0] %> class="fa fa-instagram"><%= userdetails[3][0] %></a>\
+                    <a href=<%="https://www.twitter.com/" + userdetails[3][1] %> class="fa fa-twitter"><%= userdetails[3][1]%></a>\
+                    <a href=<%="https://www.github.com/" + userdetails[3][2]%> class="fa fa-github"><%= userdetails[3][2]%></a>\
+                <% } %>\
+            </div>'
+    }
+    function html_upload(){
+        return '<h2>Upload Markdown Files</h2>\
+            <form class="upload_file" enctype="multipart/form-data" action="/create_post" method="POST">\
+            <input type="text" name="title" placeholder="Title">\
+            <input type="file" name="file" accept=".md">\
+            <input type="submit" value="Upload">\
+            </form>'
+    }
+    function html_edit_profile(){
+        return '<div class="edit_profile">\
+            <h2>Edit Your Profile</h2>\
+            <% if (userdetails) { %>\
+            <form enctype="multipart/form-data" action="/edit_profile" method="POST">\
+                <br>\
+                <img src=<%= "/public/userprofile/" +userdetails[4] %> alt ="your profile pic" width ="200" height ="200">\
+                <br>\
+                <label>Profile Pic: <input type="file" name="profile-pic" accept=".png,.jpg"></label>\
+                <br>\
+                <br>\
+                <label>Bio: <input type="text" name="bio" value="<%= userdetails[2]%>"/></label>\
+                <br>\
+                <label>Instagram: <input type="text" name="instagram" value=<%= userdetails[3][0] %>></label>\
+                <br>\
+                <label>Twitter: <input type="text" name="twitter" value=<%= userdetails[3][1] %>>  </label>\
+                <br>\
+                <label>Github: <input type="text" name="github" value=<%= userdetails[3][2] %>></label>\
+                <br><br>\
+                <label><input type="submit" value="Update" /></label>\
+            </form>\
+            <% } %>\
+            <% if (userdetails) { %><br><br>\
+            <a href=<%="/profile/:" + userdetails[0] %>>Your profile</>\
+            <% } %>\
+            </div>'
+    }
+
+    
+
+    function render_main_div(cat=0){
+        $('[id^="headernav_"]').removeClass();
+        $('[id^="headernav_"]').addClass('nav-link px-2 link-dark');
+        if(cat == 0){
+            $('#headernav_post').removeClass();
+            $('#headernav_post').addClass("nav-link px-2 link-secondary");
+            $("#main_div").html("");
+            $("#main_div").html(html_post());
+        }
+        else if(cat == 1){
+            $('#headernav_blog').removeClass();
+            $('#headernav_blog').addClass("nav-link px-2 link-secondary");
+            window.location.reload();
+            console.log('in');
+
+        }
+        else if(cat == 2){
+            $('#headernav_profile').removeClass();
+            $('#headernav_profile').addClass("nav-link px-2 link-secondary");
+            $("#main_div").html("");
+            $("#main_div").html(html_profile());
+        }
+        else if(cat == 3){
+            $("#main_div").html("");
+            $("#main_div").html(html_upload());
+        }
+        else if(cat == 4){
+            $("#main_div").html("");
+            $("#main_div").html(html_edit_profile());
+        }
+        else{
+            $("#main_div").html("<div class='err'> No Class Selected</div>");
+        }
+    }
+
+
+    $("#headernav_post").off('click').on('click', function() {
+        render_main_div(cat=0);
+    });
+    $("#headernav_blog").off('click').on('click', function() {
+        render_main_div(cat=1);
+    });
+    $("#headernav_profile").off('click').on('click', function() {
+        render_main_div(cat=2);
+    });
+    $("#headernav_dropdown_new_post").off('click').on('click', function() {
+        render_main_div(cat=3);
+    });
+    $("#headernav_dropdown_edit_profile").off('click').on('click', function() {
+        render_main_div(cat=4);
+    });
+    
+
+  </script>
+
+</body>
+
+</html>
