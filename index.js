@@ -1,14 +1,20 @@
-const http = require('http');
+var express = require('express');
+var app = express();
 
-const hostname = '127.0.0.1';
-const port = 3000;
+// set the view engine to ejs
+app.set('view engine', 'ejs');
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello World');
+// use res.render to load up an ejs view file
+app.use(express.static('public'));
+
+
+
+// index page
+app.get('/', function(req, res) {
+  res.render('login');
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+
+
+app.listen(8080);
+console.log('Server is listening on port 8080');

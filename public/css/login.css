@@ -75,6 +75,7 @@ body {
 }
 
 div form {
+  align-self: center;
   width: 30%;
   text-align: center;
 }
@@ -88,10 +89,20 @@ div form button {
   width: 100%;
   text-align: center;
   left: 35%;
+ 
 }
 
 h1 {
   text-align: center;
 }
+
+#logo {
+  text-align: center;
+  outline-color:aqua;
+  color:navy;
+  font-family: monospace;
+}
+
+
 
 /*# sourceMappingURL=login.css.map */
