@@ -2,6 +2,7 @@
 $form_width: 30%;
 $full_width: 100%;
 $center_left: $full_width / 2 - $form_width / 2;
+$enable-gradients: true;
 div{
   form {
     width: $form_width;

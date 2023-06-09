@@ -1,8 +1,5 @@
-body {
-  font: 100% system-ui, sans-serif;
-  color: #1f1f1f;
-  background-color: #ffffff;
-  font-weight: lighter;
+#bg {
+  background-color: rgb(215, 233, 233);
 }
 
 .post-list {
@@ -97,9 +94,16 @@ h1 {
 }
 
 #logo {
+  padding-top: 50px;
   text-align: center;
-  outline-color:aqua;
   color:navy;
+  font-family: monospace;
+}
+
+#blurb {
+  padding-top: 25px;
+  text-align: center;
+  color:rgb(84, 97, 73);
   font-family: monospace;
 }
 
