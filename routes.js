@@ -3,20 +3,13 @@ const { dblogin, dbregister} = require('./db');
 const bcrypt = require('bcrypt');
 
 
-
-
-async function comparePassword(plaintextPassword, hash) {
-    bcrypt.compare(plaintextPassword, hash)
-        .then(result => {
-            return result
-        })
-        .catch(err => {
-            console.log(err)
-        })
- }
-
  const home = async (req, res) => {
+    let username = req.cookies.user
+    if(username == undefined){
     res.render('login');
+    } else{
+      res.render('userhome')
+    }
 };
   
  const postLogin = async (req,res) => { //handles login post request
@@ -44,8 +37,15 @@ async function comparePassword(plaintextPassword, hash) {
             .compare(password, hashed_password)
                 .then(result => {
                     if(result){
-                        //ctx.cookies.set("user", user_id);
-                        res.redirect("/userhome"); // redirects user to their home page
+                       
+
+                        res.cookie("user",username,{
+                          secure: true,
+                          httpOnly: true,
+                          sameSite: 'strict'
+                      });
+
+                        res.redirect("/"); // redirects user to their home page
                     } else{
                         console.log("login failed");
                         res.render("login", {
@@ -111,7 +111,16 @@ async function comparePassword(plaintextPassword, hash) {
   };
 
 
-  module.exports = {home, postLogin, postRegister}
+  const logout = async(req, res) => {
+    // clear the cookie
+    res.clearCookie("user");
+    // redirect to login
+    return res.redirect("/");
+
+  }
+
+
+  module.exports = {home, postLogin, postRegister, logout}
 
   
   
