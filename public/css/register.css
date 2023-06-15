@@ -1,9 +1,7 @@
-body {
-  font: 100% system-ui, sans-serif;
-  color: #1f1f1f;
-  background-color: #ffffff;
-  font-weight: lighter;
+#bg {
+  background-color: rgb(215, 233, 233);
 }
+
 
 .post-list {
   font: 90% system-ui, sans-serif;
@@ -80,6 +78,7 @@ div form {
 }
 div form button {
   border-color: aqua;
+  padding: 20px;
   border-width: 10em;
 }
 
@@ -92,6 +91,14 @@ div form button {
 
 h1 {
   text-align: center;
+}
+
+#mainhead {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  text-align: center;
+  color:navy;
+  font-family: monospace;
 }
 
 /*# sourceMappingURL=register.css.map */
